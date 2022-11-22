@@ -37,6 +37,7 @@ To learn more about Next.js, take a look at the following resources:
 ├── lib # Utility functions (connect to database, etc.)
 ├── node_modules # Dependencies
 ├── pages # Next.js pages (index, about, etc.)
+│   ├── [id] # Dynamic user route (for user number 12345678 his route will be : /12345678/profile)
 │   └── api # Next.js API routes (api/hello, etc.)
 ├── public # Static files (images, fonts, etc.)
 ├── styles # Global styles (fonts, colors, etc.)
@@ -67,6 +68,7 @@ _Static Routes_
 _Dynamic Routes_
 
 ```tsx
+- [id] - The post folder [`/:id`] : http://localhost:3000/1
 - [id].tsx - The post page [`/post/:id`] : http://localhost:3000/post/1
 ```
 
