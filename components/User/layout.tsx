@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+
 import WorkHeader from "./header";
 
 /**
@@ -11,6 +12,10 @@ export default function WorkLayout({
 }: {
   children: ReactNode;
 }): JSX.Element {
+  // userId : 26387126387126387126831
+  const user =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiX2lkIjoiMjYzODcxMjYzODcxMjYzODcxMjY4MzEiLCJpYXQiOjE1MTYyMzkwMjJ9.o8ZMZHZnKe87MiQlZsMwGgVlv6Nfvm4FEDUPIkaf41Y";
+
   return (
     <>
       <section>
