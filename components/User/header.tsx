@@ -85,6 +85,17 @@ export default function WorkHeader(): JSX.Element {
                 Contact
               </Link>
             </li>
+            <li
+              className={
+                (path === "admin"
+                  ? "underline underline-offset-8 decoration-4 decoration-black"
+                  : "") + " text-2xl"
+              }
+            >
+              <Link href="/[id]/admin" as={`/${userId}/admin`}>
+                Admin
+              </Link>
+            </li>
           </ul>
         </div>
       </header>
