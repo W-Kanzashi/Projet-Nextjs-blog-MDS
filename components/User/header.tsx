@@ -1,22 +1,26 @@
-import { useContext } from "react";
+import { useContext, Suspense } from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/router";
+
 import profilePick from "/public/aerial-shot-beautiful-tree-forest-covered-with-fog-bled-slovenia.jpg";
 // <a href="https://www.freepik.com/free-photo/aerial-shot-beautiful-tree-forest-covered-with-fog-bled-slovenia_9184586.htm#query=aesthetic%20background&position=3&from_view=keyword">Image by wirestock</a> on Freepik
 
-import { EditMode } from "@/lib/EditContext";
 import Button from "@mui/material/Button";
+
+import { EditMode } from "@/lib/EditContext";
+
+// import HeaderLink from "./headerLink";
+const HeaderLink = dynamic(() => import("./headerLink"), {
+  suspense: true,
+});
+
 import DialogEdit from "./dialogEdit";
 
 export default function WorkHeader(): JSX.Element {
-  const router = useRouter();
   const { editMode, setEditMode, openDialog, setOpenDialog } =
     useContext(EditMode);
 
-  const path = router.asPath.split("/")[2];
-  const userId = "asojikdhkajshdkjabdkj";
-
+  const pathId = "26387126387126387126831";
   const handleEditMode = () => {
     if (editMode === true) {
       setOpenDialog(true);
@@ -24,6 +28,10 @@ export default function WorkHeader(): JSX.Element {
       setEditMode(true);
     }
   };
+
+  // userId : 26387126387126387126831
+  const user =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiX2lkIjoiMjYzODcxMjYzODcxMjYzODcxMjY4MzEiLCJpYXQiOjE1MTYyMzkwMjJ9.o8ZMZHZnKe87MiQlZsMwGgVlv6Nfvm4FEDUPIkaf41Y";
 
   return (
     <>
@@ -34,7 +42,7 @@ export default function WorkHeader(): JSX.Element {
               <Image
                 src={profilePick}
                 alt="Aerial shot of a beautiful tree in a forest covered with fog in Bled, Slovenia"
-                className="bg-cover"
+                className="object-cover h-full w-full"
                 priority={true}
               />
             </div>
@@ -51,52 +59,9 @@ export default function WorkHeader(): JSX.Element {
           </div>
         </div>
         <div className="mb-10">
-          <ul className="flex flex-row gap-6">
-            <li
-              className={
-                (path === "profile"
-                  ? "underline underline-offset-8 decoration-4 decoration-black"
-                  : "") + " text-2xl"
-              }
-            >
-              <Link href="/[id]/profile" as={`/${userId}/profile`}>
-                Profile
-              </Link>
-            </li>
-            <li
-              className={
-                (path === "work"
-                  ? "underline underline-offset-8 decoration-4 decoration-black"
-                  : "") + " text-2xl"
-              }
-            >
-              <Link href="/[id]/work" as={`/${userId}/work`}>
-                Work
-              </Link>
-            </li>
-            <li
-              className={
-                (path === "contact"
-                  ? "underline underline-offset-8 decoration-4 decoration-black"
-                  : "") + " text-2xl"
-              }
-            >
-              <Link href="/[id]/contact" as={`/${userId}/contact`}>
-                Contact
-              </Link>
-            </li>
-            <li
-              className={
-                (path === "admin"
-                  ? "underline underline-offset-8 decoration-4 decoration-black"
-                  : "") + " text-2xl"
-              }
-            >
-              <Link href="/[id]/admin" as={`/${userId}/admin`}>
-                Admin
-              </Link>
-            </li>
-          </ul>
+          <Suspense fallback={<div>Loading...</div>}>
+            <HeaderLink />
+          </Suspense>
         </div>
       </header>
       <DialogEdit open={openDialog} />

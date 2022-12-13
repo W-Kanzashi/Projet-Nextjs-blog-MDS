@@ -6,7 +6,7 @@ import { Grid } from "@mui/material";
 import Password from "./User/password";
 
 export default function EditUser(): JSX.Element {
-  const [formData, setFormData] = useState(() => {
+  const [formValue, setFormValue] = useState(() => {
     return {
       name: "",
       email: "",
@@ -16,7 +16,25 @@ export default function EditUser(): JSX.Element {
 
   const handleUserInfo = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    setFormData({ ...formData, [event.target.id]: event.target.value });
+    setFormValue({ ...formValue, [event.target.id]: event.target.value });
+  };
+
+  const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log(formValue);
+
+    const formData = new FormData();
+
+    Object.entries(formValue).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+
+    const response = await fetch("/api/user", {
+      method: "UPDATE",
+      body: formData,
+    });
+
+    console.log(await response.json());
   };
 
   return (
@@ -29,7 +47,13 @@ export default function EditUser(): JSX.Element {
           Edit your photo
           <Button variant="contained" fullWidth component="label">
             Upload
-            <input hidden accept="image/*" multiple type="file" />
+            <input
+              hidden
+              accept="image/*"
+              name="image"
+              id="image"
+              type="file"
+            />
           </Button>
         </Grid>
 
@@ -40,7 +64,7 @@ export default function EditUser(): JSX.Element {
             placeholder="Name"
             variant="outlined"
             fullWidth
-            value={formData.name}
+            value={formValue.name}
             onChange={handleUserInfo}
           />
         </Grid>
@@ -52,7 +76,7 @@ export default function EditUser(): JSX.Element {
             placeholder="Email"
             variant="outlined"
             fullWidth
-            value={formData.email}
+            value={formValue.email}
             onChange={handleUserInfo}
           />
         </Grid>

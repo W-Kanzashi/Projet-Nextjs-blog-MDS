@@ -6,9 +6,18 @@ interface EditProps {
 
 export const EditMode = createContext({
   editMode: false,
+  formValue: {
+    firstname: "",
+    lastname: "",
+    email: "",
+    password: "",
+    profile: "",
+  },
+  setFormValue: (value: any) => {},
   openDialog: false,
   setEditMode: (value: boolean) => {},
   setOpenDialog: (value: boolean) => {},
+  submit: () => {},
 });
 
 export function MyEditProvider({ children }: EditProps) {
@@ -21,9 +30,31 @@ export function MyEditProvider({ children }: EditProps) {
     return false;
   });
 
+  const [formValue, setFormValue] = useState(() => {
+    return {
+      firstname: "",
+      lastname: "",
+      email: "",
+      password: "",
+      profile: "",
+    };
+  });
+
+  const submit = async () => {
+    console.log("submit");
+  };
+
   return (
     <EditMode.Provider
-      value={{ editMode, setEditMode, openDialog, setOpenDialog }}
+      value={{
+        editMode,
+        setEditMode,
+        openDialog,
+        setOpenDialog,
+        formValue,
+        setFormValue,
+        submit,
+      }}
     >
       {children}
     </EditMode.Provider>
