@@ -19,6 +19,7 @@
 # misc
 .DS_Store
 *.pem
+.dccache
 
 # debug
 npm-debug.log*
@@ -28,6 +29,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env.me
 
 # vercel
 .vercel
@@ -35,3 +37,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.env*
+.flaskenv*
+!.env.project
+!.env.vault

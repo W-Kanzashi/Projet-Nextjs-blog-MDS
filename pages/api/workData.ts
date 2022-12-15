@@ -9,15 +9,17 @@ export default async function getHomeData(
   res: NextApiResponse
 ) {
   type SectionInfo = Pick<Sections, "title">; // Pick the title property from the Sections interface
+  // type SectionInfo1 = Pick<Sections, "text">;
   const conn = connectDB(); // Retreive the inforamtion to be able to connect to the database
   let result: any;
 
   try {
     await conn.connect(); // Connect to the database
 
-    const database = conn.db("portfolio"); // Select the database to use
-    const sections = database.collection<SectionInfo>("sections"); // Select the collection (table)
-    result = await sections.find<SectionInfo>({}).toArray(); // Find all documents in the collection
+    const database = conn.db("projet-blog"); // Select the database to use
+    const sections = database.collection("work"); // Select the collection (table)
+    result = await sections.find({}).toArray(); // Find all documents in the collection
+    console.log(result);
   } catch (error) {
     conn.close(); // Close the connection to the database
     console.log(error); // Log the error

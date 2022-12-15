@@ -7,7 +7,9 @@ export default function Layout({
 }): JSX.Element {
   return (
     <>
-      <main>{children}</main>
+      <main className="min-h-screen bg-gradient-to-r from-violet-300 via-violet-200 to-pink-300">
+        {children}
+      </main>
     </>
   );
 }
