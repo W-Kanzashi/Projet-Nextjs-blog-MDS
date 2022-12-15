@@ -11,7 +11,7 @@ async function updateProfileData(req: NextApiRequest, res: NextApiResponse) {
 
   try {
     await conn.connect(); // Connect to the database
-    const userId = new ObjectId(req.body); // Create a new ObjectId from the id passed in the query string (req.query.id
+    const userId = new ObjectId(req.body._id); // Create a new ObjectId from the id passed in the query string (req.query.id
 
     const database = conn.db("projet-blog"); // Select the database to use
     const sections = database.collection<UserData>("profile"); // Select the collection (table)
@@ -20,13 +20,13 @@ async function updateProfileData(req: NextApiRequest, res: NextApiResponse) {
         _id: userId,
         name: req.body.name,
         email: req.body.email,
-        list: req.body.list,
+        profile: req.body.profile,
       },
       {
         $set: {
           name: req.body.name,
           email: req.body.email,
-          list: req.body.list,
+          profile: req.body.profile,
         },
       }
     ); // Find user by userId in the collection profile
@@ -55,10 +55,10 @@ async function getProfileData(req: NextApiRequest, res: NextApiResponse) {
       _id: userId,
     }); // Find user by userId in the collection profile
     console.log(result);
-    res.status(200).json({ success: true, content: result }); // Send the result to the client
+    return { success: true, content: result };
   } catch (error) {
     console.log(error); // Log the error
-    res.status(400).json({ success: false, error: error }); // Send the error to the client
+    return { success: false, error: error };
   } finally {
     conn.close();
   }

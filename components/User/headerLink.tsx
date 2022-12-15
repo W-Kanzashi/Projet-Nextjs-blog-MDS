@@ -6,6 +6,8 @@ const fetcher = async (url: string): Promise<any> => {
   const user = document.cookie;
   const token = user.split("=")[1];
 
+  console.log("token : " + token);
+
   const data = await fetch(url, {
     method: "POST",
     headers: {

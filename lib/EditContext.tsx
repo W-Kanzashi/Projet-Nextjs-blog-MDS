@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, ChangeEvent } from "react";
 
 interface EditProps {
   children?: JSX.Element | Array<JSX.Element>;
@@ -10,14 +10,16 @@ export const EditMode = createContext({
     firstname: "",
     lastname: "",
     email: "",
-    password: "",
     profile: "",
   },
   setFormValue: (value: any) => {},
   openDialog: false,
   setEditMode: (value: boolean) => {},
   setOpenDialog: (value: boolean) => {},
-  submit: () => {},
+  handleChange: (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {},
+  handleSubmit: (event: any, url: string, method: string) => {},
 });
 
 export function MyEditProvider({ children }: EditProps) {
@@ -35,13 +37,40 @@ export function MyEditProvider({ children }: EditProps) {
       firstname: "",
       lastname: "",
       email: "",
-      password: "",
       profile: "",
     };
   });
 
-  const submit = async () => {
-    console.log("submit");
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    event.preventDefault();
+
+    setFormValue({
+      ...formValue,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const handleSubmit = async (event: any, url: string, method: string) => {
+    event.preventDefault();
+
+    const data = await fetch(url, {
+      method: method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formValue),
+    });
+
+    const { content } = await data.json();
+
+    Object.keys(formValue).forEach((key, value) => {
+      setFormValue({
+        ...formValue,
+        [key]: content[key],
+      });
+    });
   };
 
   return (
@@ -53,7 +82,8 @@ export function MyEditProvider({ children }: EditProps) {
         setOpenDialog,
         formValue,
         setFormValue,
-        submit,
+        handleChange,
+        handleSubmit,
       }}
     >
       {children}

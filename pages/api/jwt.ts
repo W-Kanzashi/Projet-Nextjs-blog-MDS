@@ -6,7 +6,7 @@ export default async function CheckJwt(
   res: NextApiResponse
 ) {
   const token = req.body;
-  console.log(token);
+  console.log("token : " + token);
 
   if (!token) {
     return res.status(401).json({ message: "No token provided" });

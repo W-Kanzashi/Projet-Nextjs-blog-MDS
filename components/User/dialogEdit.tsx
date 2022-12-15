@@ -9,13 +9,13 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
 export default function DialogEdit({ open }: { open: boolean }): JSX.Element {
-  const { setEditMode, setOpenDialog, submit } = useContext(EditMode);
+  const { setEditMode, setOpenDialog, handleSubmit } = useContext(EditMode);
 
   const handleClose = (e: any) => {
     if (e.target.name === "validate") {
       setOpenDialog(false);
       setEditMode(false);
-      submit();
+      handleSubmit(e, "/api/profile", "UPDATE");
     } else {
       setOpenDialog(false);
     }
