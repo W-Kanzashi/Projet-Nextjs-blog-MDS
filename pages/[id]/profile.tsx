@@ -12,8 +12,8 @@ interface EditProps {
   editMode: boolean;
   setEditMode: (value: boolean) => void;
   formValue: {
-    firstname: "";
-    lastname: "";
+    _id: "";
+    name: "";
     email: "";
     password: "";
   };
@@ -46,8 +46,8 @@ export default function Profile(): JSX.Element {
 
     setFormValue({
       ...formValue,
-      firstname: content.firstname,
-      lastname: content.lastname,
+      _id: content._id,
+      name: content.name,
       email: content.email,
       profile: content.profile,
     });

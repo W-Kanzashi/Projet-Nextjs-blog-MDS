@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import connectDB from "@/lib/database";
 
-import Sections from "@/interfaces/Sections";
+import Sections from "@/interfaces/UserProfile";
 
 export default async function getHomeData(
   req: NextApiRequest,

@@ -4,7 +4,7 @@ interface UserData {
   _id: ObjectId;
   name: string;
   email: string;
-  list: string;
+  profile: string;
 }
 
 export default UserData;

@@ -18,8 +18,6 @@ const fetcher = async (url: string): Promise<any> => {
 
   const decoded = await data.json();
 
-  console.log(decoded);
-
   return decoded;
 };
 

@@ -2,14 +2,14 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import connectDB from "@/lib/database";
 
-import Sections from "@/interfaces/Sections";
+import Sections from "@/interfaces/UserProfile";
 
 export default async function getHomeData(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  type SectionInfo = Pick<Sections, "title">;// Pick the title property from the Sections interface
-  // type SectionInfo1 = Pick<Sections, "text">; 
+  type SectionInfo = Pick<Sections, "title">; // Pick the title property from the Sections interface
+  // type SectionInfo1 = Pick<Sections, "text">;
   const conn = connectDB(); // Retreive the inforamtion to be able to connect to the database
   let result: any;
 
@@ -29,6 +29,3 @@ export default async function getHomeData(
     res.json({ message: "201", success: true, content: result }); // Send the result to the client
   }
 }
-
-
-
