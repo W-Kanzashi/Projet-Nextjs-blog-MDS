@@ -1,11 +1,18 @@
+import UserLayout from "@/components/User/layout";
+import EditUser from "@/components/Admin/EditUser";
+
 /**
  * Admin page to be able to edit the profile of a user
  * @returns JSX.Element
  */
-export default function admin(): JSX.Element {
+export default function Admin(): JSX.Element {
   return (
     <>
-      <section></section>
+      <UserLayout>
+        <section>
+          <EditUser />
+        </section>
+      </UserLayout>
     </>
   );
 }

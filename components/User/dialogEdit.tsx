@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { EditMode } from "@/lib/EditContext";
+
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -8,12 +9,13 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
 export default function DialogEdit({ open }: { open: boolean }): JSX.Element {
-  const { setEditMode, setOpenDialog } = useContext(EditMode);
+  const { setEditMode, setOpenDialog, handleSubmit } = useContext(EditMode);
 
   const handleClose = (e: any) => {
     if (e.target.name === "validate") {
       setOpenDialog(false);
       setEditMode(false);
+      handleSubmit(e, "/api/profile", "UPDATE");
     } else {
       setOpenDialog(false);
     }
@@ -40,7 +42,12 @@ export default function DialogEdit({ open }: { open: boolean }): JSX.Element {
           <Button name="cancel" onClick={(e) => handleClose(e)}>
             Cancel
           </Button>
-          <Button name="validate" onClick={(e) => handleClose(e)} autoFocus>
+          <Button
+            type="button"
+            name="validate"
+            onClick={(e) => handleClose(e)}
+            autoFocus
+          >
             Validate
           </Button>
         </DialogActions>

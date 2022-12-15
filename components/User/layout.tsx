@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 
 import WorkHeader from "./header";
 import Sidebar from "./sidebar";
@@ -13,9 +13,10 @@ export default function WorkLayout({
 }: {
   children: ReactNode;
 }): JSX.Element {
-  // userId : 26387126387126387126831
-  const user =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiX2lkIjoiMjYzODcxMjYzODcxMjYzODcxMjY4MzEiLCJpYXQiOjE1MTYyMzkwMjJ9.o8ZMZHZnKe87MiQlZsMwGgVlv6Nfvm4FEDUPIkaf41Y";
+  useEffect(() => {
+    document.cookie =
+      "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiX2lkIjoiNjM3ZTY2MWM4MTY0MzFmNDI3OGJlM2U0IiwiaWF0IjoxNTE2MjM5MDIyfQ.e7F0GYq4FpbmaVcUpOdFH6XfO3OHvusfsp5FFbi4tqI; path=/;";
+  }, []);
 
   return (
     <>
