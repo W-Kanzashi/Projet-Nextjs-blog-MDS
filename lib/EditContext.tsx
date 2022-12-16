@@ -7,8 +7,7 @@ interface EditProps {
 export const EditMode = createContext({
   editMode: false,
   formValue: {
-    firstname: "",
-    lastname: "",
+    name: "",
     email: "",
     profile: "",
   },
@@ -34,8 +33,8 @@ export function MyEditProvider({ children }: EditProps) {
 
   const [formValue, setFormValue] = useState(() => {
     return {
-      firstname: "",
-      lastname: "",
+      _id: "",
+      name: "",
       email: "",
       profile: "",
     };
@@ -65,10 +64,10 @@ export function MyEditProvider({ children }: EditProps) {
 
     const { content } = await data.json();
 
-    Object.keys(formValue).forEach((key, value) => {
+    Object.keys(content.value).forEach((key, value) => {
       setFormValue({
         ...formValue,
-        [key]: content[key],
+        [key]: content.value[key],
       });
     });
   };

@@ -5,7 +5,11 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      animation: {
+        "pulse-slow": "pulse 4s linear infinite",
+      },
+    },
   },
   plugins: [
     require('@tailwindcss/typography'),
