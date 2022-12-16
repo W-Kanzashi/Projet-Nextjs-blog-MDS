@@ -1,24 +1,12 @@
-import { useContext, useState } from "react";
-import { useRouter } from "next/router";
+import { useContext } from "react";
 import WorkLayout from "@/components/User/layout";
 import { EditMode } from "@/lib/EditContext";
 
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import Loading from "@/components/Loading/loading";
 
 import useSWR from "swr";
-
-interface EditProps {
-  editMode: boolean;
-  setEditMode: (value: boolean) => void;
-  formValue: {
-    _id: "";
-    name: "";
-    email: "";
-    password: "";
-  };
-  setFormValue: (value: any) => {};
-}
 
 /**
  * Display the user's profile. If the user is the owner of the profile, display
@@ -27,8 +15,7 @@ interface EditProps {
  * @returns JSX.Element
  */
 export default function Profile(): JSX.Element {
-  const { asPath } = useRouter();
-  const { editMode, setEditMode, formValue, setFormValue, handleChange } =
+  const { editMode, formValue, setFormValue, handleChange } =
     useContext(EditMode);
 
   const fetcher = async (url: string): Promise<any> => {
@@ -58,7 +45,7 @@ export default function Profile(): JSX.Element {
   const { data, error } = useSWR("/api/profile", fetcher);
 
   if (error) return <div>Profile fail to load</div>;
-  if (!data) return <div>loading...</div>;
+  if (!data) return <Loading />;
 
   return (
     <>

@@ -20,18 +20,16 @@ export default function WorkLayout({
 
   return (
     <>
-      <section>
-        <div className="bg-gradient-to-r from-violet-300 via-violet-200 to-pink-300 h-56 w-full"></div>
-        <div className="container mx-auto flex flex-col md:flex-row flex-1">
-          {/* Sidebar */}
-          <aside className="bg-fuchsia-100 w-full md:w-60"><Sidebar /></aside>
-          <main className="flex-1">
-            {/* Header */}
-            <WorkHeader />
-            {children}
-          </main>
-        </div>
-      </section>
+      <div className="bg-gradient-to-r from-violet-300 via-violet-200 to-pink-300 h-56 w-full"></div>
+      <div className="container mx-auto flex flex-col md:flex-row">
+        {/* Sidebar */}
+        <Sidebar />
+        <main className="left-1/4 relative w-3/4">
+          {/* Header */}
+          <WorkHeader />
+          {children}
+        </main>
+      </div>
     </>
   );
 }
