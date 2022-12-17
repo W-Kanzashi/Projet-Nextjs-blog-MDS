@@ -15,14 +15,29 @@ import { Copyright } from "pages";
 const theme = createTheme();
 
 export default function newAccount() {
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
+        const data = event.currentTarget;
+        const lastName = data.lastName.value;
+        const firstName = data.firstName.value;
+        const email = data.email.value;
+        const password = data.password.value;
         console.log({
-            firstname: data.get("firstname"),
-            lastname: data.get("lastname"),
-            email: data.get("email"),
-            password: data.get("password"),
+            lastName ,
+            firstName,
+            email,
+            password 
+        });
+        const response = await fetch("/api/user", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                lastName, 
+                firstName, 
+                email, 
+                password})     
         });
     };
 
@@ -102,7 +117,7 @@ export default function newAccount() {
                                 variant="contained"
                                 sx={{ mt: 4, mb: 2, color: '#1976d2', ":hover": {color : '#FFFFFF'}}}
                             >
-                                Log In
+                                Register
                             </Button>
                             <Grid container justifyContent="flex-end">
                                 <Grid item>
