@@ -13,6 +13,10 @@ export default async function apiHandler(req: NextApiRequest, res: NextApiRespon
       result = await createUser(req, res);
       res.json(result); // Send the error to the client
       break;
+    case "GET":
+      result = await getUsers(req, res);
+      res.json(result);
+      break;
   }
 };
 
@@ -42,4 +46,8 @@ async function createUser(req: NextApiRequest, res: NextApiResponse) {
     conn.close();
     res.json({ message: "201", success: true, content: newUser }); // Send the result to the client
   }
+}
+
+async function getUsers(req: NextApiRequest, res: NextApiResponse) {
+  
 }
