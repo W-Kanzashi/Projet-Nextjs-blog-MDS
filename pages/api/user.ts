@@ -38,16 +38,33 @@ async function createUser(req: NextApiRequest, res: NextApiResponse) {
         password: password
       }
     )
+    return { success: true, content: result };
   } catch (error) {
     conn.close(); // Close the connection to the database
     console.log(error); // Log the error
-    res.json({ message: "201", success: false, error: error }); // Send the error to the client
+    return { success: false, error: error };
   } finally {
     conn.close();
-    res.json({ message: "201", success: true, content: newUser }); // Send the result to the client
   }
 }
 
 async function getUsers(req: NextApiRequest, res: NextApiResponse) {
-  
+  const conn = connectDB(); // Retrieve the information to be able to connect to the database
+  let result: any;
+
+  try {
+    await conn.connect(); // Connect to the database
+
+    const database = conn.db("projet-blog"); // Select the database to use
+    const userList = database.collection<UserData>("users"); // Select the collection (table)
+    result = await userList.find({}, {name: 1, surname: 1}); // get all users names and surname
+    console.log(result);
+    return { success: true, content: result };
+
+  } catch (error) {
+    console.log(error); // Log the error
+    return { success: false, error: error };
+  } finally {
+    conn.close();
+  }
 }
