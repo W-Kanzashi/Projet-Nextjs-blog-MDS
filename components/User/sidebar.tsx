@@ -19,6 +19,7 @@ export default function Sidebar(): JSX.Element {
     });
 
     const { content } = await data.json();
+    console.log(content);
     return content;
   }
 
