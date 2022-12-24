@@ -38,7 +38,7 @@ async function createUser(req: NextApiRequest, res: NextApiResponse) {
         password: password
       }
     )
-    return { success: true, content: result };
+    return { success: true, content: newUser };
   } catch (error) {
     conn.close(); // Close the connection to the database
     console.log(error); // Log the error
