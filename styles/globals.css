@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.css-a5ovl9-MuiPaper-root{
+    color:rgb(157, 154, 154);
+}
+
+/*padding and margin between cards*/
+.css-10mzr36-MuiGrid-root>.MuiGrid-item {
+    padding-left: 16px;
+    margin-left: 76px;
+    margin-bottom:20px;
+}
+
+/*the color of the date */
+.css-83ijpv-MuiTypography-root {
+    margin: 0;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 1.43;
+    letter-spacing: 0.01071em;
+    color: #fa0089;
+    display: block;
+}
+/*background color of the whole page */
+
+

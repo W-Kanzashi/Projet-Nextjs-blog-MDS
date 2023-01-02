@@ -19,11 +19,14 @@ import { orange } from '@mui/material/colors';
 import { indigo } from '@mui/material/colors';
 import { teal } from '@mui/material/colors';
 import { Typography } from '@mui/material';
-import { makeStyles } from '@material-ui/core/styles';
+// import { makeStyles } from '@material-ui/core/styles';
 //API FETCH
 import { useState, useEffect } from "react";
 import { decode } from 'punycode';
 import { fontSize } from '@mui/system';
+import EditIcon from '@mui/icons-material/Edit';
+
+
 
 
 
@@ -58,17 +61,8 @@ const handleUser = async () => { // API Handler
     // check the jwt token to see if the user is the owner of the page
     // Store the response of the api in data
 
- const newJoke = {
-  categories: "dev",
-  value: "Chuck Norris's keyboard is made up entirely of Cmd keys because Chuck Norris is always in command."
-}
-    const data = await fetch("/api/workData", {
-      
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newJoke),
+    const data = await fetch("/api/workData", {     
+      method: "GET",
        
     });
  
@@ -77,7 +71,8 @@ const handleUser = async () => { // API Handler
   const decoded = await data.json();
   console.log(decoded);
 
-    // title Save the data in a useState function
+  // title Save the data in a useState function
+  // useState
   setSaveJoke0(decoded.content[0].title);
   setSaveJoke1(decoded.content[1].title);
   setSaveJoke2(decoded.content[2].title);
@@ -94,7 +89,7 @@ const handleUser = async () => { // API Handler
   
 
 
-
+// async function
   };
   useEffect(() => {
     handleUser();
@@ -221,6 +216,7 @@ const handleUser = async () => { // API Handler
        <Item>
                         
                 <h1 style={{ fontSize: '20px', color: '#fa0089' }}>{saveJoke3}</h1>
+                
                 <p>{saveText3}</p>
                         <div><IconButton aria-label="add to favorites" style={{backgroundColor:'#fa0089'}}>
           <FavoriteIcon />
