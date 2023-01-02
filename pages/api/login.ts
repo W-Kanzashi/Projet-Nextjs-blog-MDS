@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 
 import connectDB from "@/lib/database";
 import UserData from "@/interfaces/userModel";
+import jwt from 'jsonwebtoken';
 
 const bcrypt = require("bcrypt");
 
@@ -43,7 +44,8 @@ async function logUser(req: NextApiRequest, res: NextApiResponse) {
       
       if (match) {
           console.log("success");
-          return { success: true, content: user };
+          let token = jwt.sign({_id: user._id, surname: user.surname, user: user.name, email: user.email}, <string>process.env.LOGKEY, {expiresIn: "1h"})
+          return { success: true, content: token};
         } else {
           console.log("fail");
           return "wrong username or password";

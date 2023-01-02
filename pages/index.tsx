@@ -15,6 +15,8 @@ import Layout from "@/components/layout";
 
 import { useRouter } from "next/router";
 import { MouseEvent } from "react";
+import { setCookie } from 'cookies-next';
+import jwt from 'jsonwebtoken';
 
 const theme = createTheme();
 
@@ -42,6 +44,8 @@ export default function Home() {
 
     const dataTest = await response.json();
     if(dataTest.success == true) {
+
+      setCookie('session', dataTest.content);
       router.push("/dnasdnakjd/profile");
     }
 
