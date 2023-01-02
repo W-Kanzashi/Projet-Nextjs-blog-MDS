@@ -57,8 +57,8 @@ async function getUsers(req: NextApiRequest, res: NextApiResponse) {
 
     const database = conn.db("projet-blog"); // Select the database to use
     const userList = database.collection<UserData>("users"); // Select the collection (table)
-    result = await userList.find({}, {name: 1, surname: 1, _id: 0}); // get all users names and surname
-    console.log(result);
+    result = await userList.find({}, {projection: {name: 1, surname: 1, _id: 0}}); // get all users names and surname
+    //console.log(result);
     return { success: true, content: result };
 
   } catch (error) {

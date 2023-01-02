@@ -5,7 +5,6 @@ import connectDB from "@/lib/database";
 import UserData from "@/interfaces/userModel";
 
 const bcrypt = require("bcrypt");
-const router = useRouter();
 
 export default async function apiHandler(req: NextApiRequest, res: NextApiResponse) {
   let result: any;
@@ -28,7 +27,7 @@ async function logUser(req: NextApiRequest, res: NextApiResponse) {
       const database = conn.db("projet-blog"); // Select the database to use
       const sections = database.collection<UserData>("users"); // Select the collection (table)
 
-      console.log(req.body.email, req.body.password);
+      //console.log(req.body.email, req.body.password);
       user = await sections.findOne(
         {
           email: req.body.email,
@@ -40,16 +39,16 @@ async function logUser(req: NextApiRequest, res: NextApiResponse) {
         return "wrong username or password";
       }
 
-      bcrypt.compare(req.body.password, user.password, function(result: boolean){
-        if(result == false) {
+      const match = await bcrypt.compare(req.body.password, user.password);
+      
+      if (match) {
+          console.log("success");
+          return { success: true, content: user };
+        } else {
           console.log("fail");
           return "wrong username or password";
-        } else {
-          console.log("success");
-          router.push("/dnasdnakjd/profile");
-          return { success: true, content: user };
         }
-      })
+      
 
     } catch (error) {
       console.log(error); // Log the error

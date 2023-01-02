@@ -39,6 +39,12 @@ export default function Home() {
             email, 
             password})     
     });
+
+    const dataTest = await response.json();
+    if(dataTest.success == true) {
+      router.push("/dnasdnakjd/profile");
+    }
+
   };
 
   return (

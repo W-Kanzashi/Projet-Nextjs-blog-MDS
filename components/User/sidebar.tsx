@@ -19,13 +19,14 @@ export default function Sidebar(): JSX.Element {
     });
 
     const { content } = await data.json();
-    console.log(content);
     return content;
   }
 
   const { data, error } = useSWR("/api/user", fetcher);
   if (error) return <div>user liset fail to load</div>;
   if (!data) return <Loading />;
+
+  console.log(data);
 
   return (
     <>
@@ -34,6 +35,8 @@ export default function Sidebar(): JSX.Element {
           Liste des utilisateurs
         </h2>
         <ol>
+        {Object.keys(data).map((key, value) => {
+          return (
           <li className="container py-3 px-4 mx-auto flex flex-row items-center justify-around gap-6">
             <div className="relative h-20 w-20 bg-black rounded-full overflow-hidden">
               {/* profile picture */}
@@ -46,69 +49,11 @@ export default function Sidebar(): JSX.Element {
             </div>
             <div>
               {/* name */}
-              <p className="text-lg">Lorem, ipsum.</p>
+              <p className="text-lg">{data[key].surname} {data[key].name}</p>
             </div>
           </li>
-          <li className="container py-3 px-4 mx-auto flex flex-row items-center justify-around gap-6">
-            <div className="relative h-20 w-20 bg-black rounded-full overflow-hidden">
-              {/* profile picture */}
-              <Image
-                src={profilePick}
-                alt="Aerial shot of a beautiful tree in a forest covered with fog in Bled, Slovenia"
-                className="object-cover h-full w-full"
-                priority={true}
-              />
-            </div>
-            <div>
-              {/* name */}
-              <p className="text-lg">Lorem, ipsum.</p>
-            </div>
-          </li>
-          <li className="container py-3 px-4 mx-auto flex flex-row items-center justify-around gap-6">
-            <div className="relative h-20 w-20 bg-black rounded-full overflow-hidden">
-              {/* profile picture */}
-              <Image
-                src={profilePick}
-                alt="Aerial shot of a beautiful tree in a forest covered with fog in Bled, Slovenia"
-                className="object-cover h-full w-full"
-                priority={true}
-              />
-            </div>
-            <div>
-              {/* name */}
-              <p className="text-lg">Lorem, ipsum.</p>
-            </div>
-          </li>
-          <li className="container py-3 px-4 mx-auto flex flex-row items-center justify-around gap-6">
-            <div className="relative h-20 w-20 bg-black rounded-full overflow-hidden">
-              {/* profile picture */}
-              <Image
-                src={profilePick}
-                alt="Aerial shot of a beautiful tree in a forest covered with fog in Bled, Slovenia"
-                className="object-cover h-full w-full"
-                priority={true}
-              />
-            </div>
-            <div>
-              {/* name */}
-              <p className="text-lg">Lorem, ipsum.</p>
-            </div>
-          </li>
-          <li className="container py-3 px-4 mx-auto flex flex-row items-center justify-around gap-6">
-            <div className="relative h-20 w-20 bg-black rounded-full overflow-hidden">
-              {/* profile picture */}
-              <Image
-                src={profilePick}
-                alt="Aerial shot of a beautiful tree in a forest covered with fog in Bled, Slovenia"
-                className="object-cover h-full w-full"
-                priority={true}
-              />
-            </div>
-            <div>
-              {/* name */}
-              <p className="text-lg">Lorem, ipsum.</p>
-            </div>
-          </li>
+          );
+        })}
         </ol>
       </aside>
     </>
