@@ -45,7 +45,7 @@ async function logUser(req: NextApiRequest, res: NextApiResponse) {
       if (match) {
           console.log("success");
           let token = jwt.sign({_id: user._id, surname: user.surname, user: user.name, email: user.email}, <string>process.env.LOGKEY, {expiresIn: "1h"})
-          return { success: true, content: token};
+          return { success: true, content: token, id: user._id};
         } else {
           console.log("fail");
           return "wrong username or password";

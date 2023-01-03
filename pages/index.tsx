@@ -44,9 +44,9 @@ export default function Home() {
 
     const dataTest = await response.json();
     if(dataTest.success == true) {
-
       setCookie('session', dataTest.content);
-      router.push("/dnasdnakjd/profile");
+      setCookie('userId', dataTest.id);
+      router.push("/"+dataTest.id+"/profile");
     }
 
   };
