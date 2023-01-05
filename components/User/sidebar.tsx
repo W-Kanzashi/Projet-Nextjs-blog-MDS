@@ -35,9 +35,9 @@ export default function Sidebar(): JSX.Element {
           Liste des utilisateurs
         </h2>
         <ol>
-        {Object.keys(data).map((key, value) => {
+        {Object.keys(data).map((key) => {
           return (
-          <li className="container py-3 px-4 mx-auto flex flex-row items-center justify-around gap-6">
+          <li className="container py-3 px-4 mx-auto flex flex-row items-center justify-around gap-6" key={key}>
             <div className="relative h-20 w-20 bg-black rounded-full overflow-hidden">
               {/* profile picture */}
               <Image
