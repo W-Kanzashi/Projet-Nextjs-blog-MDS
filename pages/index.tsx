@@ -15,36 +15,40 @@ import Layout from "@/components/layout";
 
 import { useRouter } from "next/router";
 import { MouseEvent } from "react";
-
-export function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright Â© "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import { setCookie } from 'cookies-next';
+import jwt from 'jsonwebtoken';
 
 const theme = createTheme();
 
 export default function Home() {
   const router = useRouter();
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    document.cookie =
-      "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiX2lkIjoiNjM3ZTY2MWM4MTY0MzFmNDI3OGJlM2U0IiwiaWF0IjoxNTE2MjM5MDIyfQ.e7F0GYq4FpbmaVcUpOdFH6XfO3OHvusfsp5FFbi4tqI; path=/;";
+  const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = event.currentTarget;
+    const email = data.email.value;
+    const password = data.password.value;
+    console.log({
+        email,
+        password 
+    });
+    const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            email, 
+            password})     
+    });
 
-    router.push("/637e661c816431f4278be3e4/profile");
+    const dataTest = await response.json();
+    if(dataTest.success == true) {
+      setCookie('session', dataTest.content);
+      setCookie('userId', dataTest.id);
+      router.push("/"+dataTest.id+"/profile");
+    }
+
   };
 
   return (
@@ -67,7 +71,11 @@ export default function Home() {
               <Typography component="h1" variant="h5">
                 Log in
               </Typography>
-              <Box component="form" noValidate sx={{ mt: 3 }}>
+              <Box 
+                component="form" 
+                noValidate sx={{ mt: 3 }}
+                onSubmit={handleSubmit}
+              >
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <TextField
@@ -109,7 +117,6 @@ export default function Home() {
                     color: "#1976d2",
                     ":hover": { color: "#FFFFFF" },
                   }}
-                  onClick={handleSubmit}
                 >
                   Log In
                 </Button>
@@ -127,5 +134,23 @@ export default function Home() {
         </ThemeProvider>
       </Layout>
     </>
+  );
+}
+
+export function Copyright(props: any) {
+  return (
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright Â© "}
+      <Link color="inherit" href="https://mui.com/">
+        Your Website
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
   );
 }
