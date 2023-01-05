@@ -1,4 +1,4 @@
-// import * as React from "react"; //import all of react 
+// import * as React from "react"; 
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
@@ -18,48 +18,61 @@ import { orange } from "@mui/material/colors";
 import { indigo } from "@mui/material/colors";
 import { teal } from "@mui/material/colors";
 
-//Hooks for the API 
+
+//API FETCH
 import { useState, useEffect } from "react";
+// import { decode } from "punycode";
 import TextField from "@mui/material/TextField";
 import { useRouter } from 'next/router';
 
-//*!end update form const*/
 
+//*!end update form const*/
+//Styled components are a good choice for building a UI library since everything
+// can be in one file and easily be exported and reused
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "light" ? "#000" : "#ccc",//if it's light, then it's black, otherwise it's grey
-  ...theme.typography.body2, // it inherits a typography 
+  backgroundColor: theme.palette.mode === "light" ? "#000" : "#ccc",
+  ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: "justify",
   color: theme.palette.text.secondary,
 }));
 
+//export default is used to export a single class, function or primitive from a script file.
+//export le componenet 
 export default function RowAndColumnSpacing() {
-  //API
-  //title
-
+  
   //*!form to update the work history*/
+  //useState est un Hook qui permet d’ajouter l’état local React à des fonctions composants
+  //setFormValues nous permetre de modifier la valeur du variable
+  //useState c'est pour sauvgardé l'état d'un component
+  //formValue retourn l'état  
   const [formValue, setFormValue] = useState(() => {
     return {
       title: "",
       text: "",
     };
   });
+  //permet de mettre à jour formValue
   const handleUserInfo = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     setFormValue({ ...formValue, [event.target.id]: event.target.value });
   };
 
-  //excution when I click on the validate button
+  //fonction s'excution when I click on the validate button
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(formValue);
 
+//creé un objet formdata qui contiendra un tableau
     const formData = new FormData();
-
+//loop in formvalue
+    //key title,key text, value what is going to display
     Object.entries(formValue).forEach(([key, value]) => {
+      //La méthode append() de l'interface FormData ajoute une nouvelle valeur à une clé existante dans un
+      // objet FormData, ou rajoute cette clé et cette valeur quand elle n'existe pas.
       formData.append(key, value);
     });
-
+//
     const response = await fetch("/api/workData", {
       method: "UPDATE",
       body: formData,
@@ -68,12 +81,19 @@ export default function RowAndColumnSpacing() {
     console.log(await response.json());
   };
   //*!end/
-  const [saveJoke0, setSaveJoke0] = useState("");
-  const [saveJoke1, setSaveJoke1] = useState("");
-  const [saveJoke2, setSaveJoke2] = useState("");
-  const [saveJoke3, setSaveJoke3] = useState("");
-  const [saveJoke4, setSaveJoke4] = useState("");
-  const [saveJoke5, setSaveJoke5] = useState("");
+
+  //*!select the data/
+  //**pour sauvagarder tous les titres et les textes */
+  //*map as an alternative*/
+  //*getter est pour récupérer 
+
+
+  const [saveTitle0, setSaveTitle0] = useState("");
+  const [saveTitle1, setSaveTitle1] = useState("");
+  const [saveTitle2, setSaveTitle2] = useState("");
+  const [saveTitle3, setSaveTitle3] = useState("");
+  const [saveTitle4, setSaveTitle4] = useState("");
+  const [saveTitle5, setSaveTitle5] = useState("");
   //text
   const [saveText0, setSaveText0] = useState("");
   const [saveText1, setSaveText1] = useState("");
@@ -82,28 +102,28 @@ export default function RowAndColumnSpacing() {
   const [saveText4, setSaveText4] = useState("");
   const [saveText5, setSaveText5] = useState("");
 
+  // la méthode qui fait le get
+  //await -> asyncranous function
   const handleUser = async () => {
-    // API Handler
-    // check the jwt token to see if the user is the owner of the page
-    // Store the response of the api in data
-
+    
+// la méthode get 
     const data = await fetch("/api/workData", {
       method: "GET",
     });
 
-    // Convert the string into json
+    // Convert the string into json format
     const decoded = await data.json();
-    console.log(decoded); //
+    console.log(decoded); // ce que je récupére
 
     // title Save the data in a useState function
     // useState
-
-    setSaveJoke0(decoded[0].title);
-    setSaveJoke1(decoded[1].title);
-    setSaveJoke2(decoded[2].title);
-    setSaveJoke3(decoded[3].title);
-    setSaveJoke4(decoded[4].title);
-    setSaveJoke5(decoded[5].title);
+  //*!select the data/
+    setSaveTitle0(decoded[0].title);
+    setSaveTitle1(decoded[1].title);
+    setSaveTitle2(decoded[2].title);
+    setSaveTitle3(decoded[3].title);
+    setSaveTitle4(decoded[4].title);
+    setSaveTitle5(decoded[5].title);
     // title Save the data a useState function
     setSaveText0(decoded[0].text);
     setSaveText1(decoded[1].text);
@@ -112,8 +132,11 @@ export default function RowAndColumnSpacing() {
     setSaveText4(decoded[4].text);
     setSaveText5(decoded[5].text);
 
-    // async function
   };
+  //Le hook useEffect est un hook qui va permettre de déclencher une fonction
+  // de manière asynchrone lorsque l'état du composant change
+  //lancer la fonctionn handeluser le moment ou je charge la page
+//appel à notre API se fait au niveau du hook useEffect
   useEffect(() => {
     handleUser();
   }, []);
@@ -126,19 +149,27 @@ export default function RowAndColumnSpacing() {
      return false;
    });
 // condition
-  console.log(router.pathname);
+  
   const userId = "639dd629ca2b121f57c65960"; // got it from the database, table user
   // if the id user in the url corresponds to the user id , then then the user is an admin
   // split is a method used to split the url or routerpathname
-  const token = router.pathname.split("/")[2];
+  const token = router.asPath.split("/")[2];
    console.log("token : " + token);
- useEffect(() => {
-   if (router.pathname === userId) {
+  useEffect(() => {
+     if (router.query.id === userId) { //if the id of the user corresponds to the id in the url , then the user is an admin
      setIsAdmin(true);
-      
+           
     }
-  }, []);
-  //console.log(saveJoke);
+    console.log(router.query);
+    // query.id will send an object which contains the path of my file(dossier pages)
+    //it's an object returned by next, excuted before displaying my page
+    
+  });
+  // const postId = "63947260c7f11bfea52b7d89";
+  // const data = await fetch("/api/workData", {
+  //     method: "DELETE",
+  //   });
+
   return (
     <Box sx={{ width: "100%" }}>
       <div style={{ padding: 30 }}>
@@ -175,33 +206,42 @@ export default function RowAndColumnSpacing() {
               component="img"
               height="194"
               image="/sebastien.webp"
-              alt="Paella dish"
+              alt="sebstien"
             />
 
             <Item>
-              <TextField className="text-white"
+              {isAdmin === true ? (
+               <>
+                <TextField className="text-white"
                 id="title"
                 label="Title"
                 placeholder="title"
                 variant="outlined"
                 fullWidth
-                value={saveJoke1}
-                onChange={(e) => setSaveJoke1(e.target.value)}
-              />
-
-              <h1 style={{ fontSize: "20px", color: "#00C5C8" }}>
-                {saveJoke1}
-              </h1>
-              <TextField className="text-white"
+                value={saveTitle1}
+                onChange={(e) => setSaveTitle1(e.target.value)}
+                />
+              
+                <TextField className="text-white"
                 id="text"
                 label="Text"
                 placeholder="text"
                 variant="outlined"
                 fullWidth
                 value={saveText1}
-                onChange={(e) => setSaveText1(e.target.value)}
-              />
-              <p>{saveText1}</p>
+                    onChange={(e) => setSaveText1(e.target.value)}
+                    placeholder="MultiLine with rows: 4 and rowsMax: 6"
+                    multiline
+                    rows={4}
+                    maxRows={6}
+                  />
+                </>    
+               
+   ):( <><h1 style={{ fontSize: "20px", color: "#00C5C8" }}> 
+                {saveTitle1}
+              </h1>
+           
+              <p>{saveText1}</p></>)}              
               <div>
                 <IconButton
                   aria-label="add to favorites"
@@ -244,18 +284,17 @@ export default function RowAndColumnSpacing() {
             />
 
             <Item>
+              {isAdmin === true ? (
+                 <>
               <TextField className="text-white"
                 id="title"
                 label="Title"
                 placeholder="title"
                 variant="outlined"
                 fullWidth
-                value={saveJoke2}
-                onChange={(e) => setSaveJoke2(e.target.value)}
+                value={saveTitle2}
+                onChange={(e) => setSaveTitle2(e.target.value)}
               />
-              <h1 style={{ fontSize: "20px", color: "#ffeb3b" }}>
-                {saveJoke2}
-              </h1>
               <TextField className="text-white"
                 id="text"
                 label="Text"
@@ -263,9 +302,17 @@ export default function RowAndColumnSpacing() {
                 variant="outlined"
                 fullWidth
                 value={saveText2}
-                onChange={(e) => setSaveText2(e.target.value)}
-              />
-              <p>{saveText2}</p>
+                    onChange={(e) => setSaveText2(e.target.value)}
+                    placeholder="MultiLine with rows: 4 and rowsMax: 6"
+                    multiline
+                    rows={4}
+                    maxRows={6}
+                  />
+                   </>
+                  ):( <><h1 style={{ fontSize: "20px", color: "#ffeb3b" }}>
+                {saveTitle2}
+              </h1>
+              <p>{saveText2}</p></>)} 
               <div>
                 {" "}
                 <IconButton
@@ -309,18 +356,17 @@ export default function RowAndColumnSpacing() {
             />
 
             <Item>
+              {isAdmin === true ? (
+                 <>
               <TextField className="text-white"
                 id="title"
                 label="Title"
                 placeholder="title"
                 variant="outlined"
                 fullWidth
-                value={saveJoke3}
-                onChange={(e) => setSaveJoke3(e.target.value)}
+                value={saveTitle3}
+                onChange={(e) => setSaveTitle2(e.target.value)}
               />
-              <h1 style={{ fontSize: "20px", color: "#fa0089" }}>
-                {saveJoke3}
-              </h1>
               <TextField className="text-white"
                 id="text"
                 label="Text"
@@ -328,9 +374,17 @@ export default function RowAndColumnSpacing() {
                 variant="outlined"
                 fullWidth
                 value={saveText3}
-                onChange={(e) => setSaveText3(e.target.value)}
-              />
-              <p>{saveText3}</p>
+                    onChange={(e) => setSaveText3(e.target.value)}
+                    placeholder="MultiLine with rows: 4 and rowsMax: 6"
+                    multiline
+                    rows={4}
+                    maxRows={6}
+                  />
+                   </>
+                  ):( <><h1 style={{ fontSize: "20px", color: "#ffeb3b" }}>
+                {saveTitle3}
+              </h1>
+              <p>{saveText3}</p></>)} 
               <div>
                 <IconButton
                   aria-label="add to favorites"
@@ -373,29 +427,35 @@ export default function RowAndColumnSpacing() {
             />
 
             <Item>
+              {isAdmin === true ? (
+                 <>
               <TextField className="text-white"
                 id="title"
                 label="Title"
                 placeholder="title"
                 variant="outlined"
                 fullWidth
-                value={saveJoke4}
-                onChange={(e) => setSaveJoke4(e.target.value)}
+                value={saveTitle4}
+                onChange={(e) => setSaveTitle4(e.target.value)}
               />
-
-              <h1 style={{ fontSize: "20px", color: "#009688" }}>
-                {saveJoke4}
-              </h1>
-               <TextField className="text-white"
+              <TextField className="text-white"
                 id="text"
                 label="Text"
                 placeholder="text"
                 variant="outlined"
                 fullWidth
                 value={saveText4}
-                onChange={(e) => setSaveText4(e.target.value)}
-              />
-              <p>{saveText4}</p>
+                    onChange={(e) => setSaveText4(e.target.value)}
+                    placeholder="MultiLine with rows: 4 and rowsMax: 6"
+                    multiline
+                    rows={4}
+                    maxRows={6}
+                  />
+                   </>
+                  ):( <><h1 style={{ fontSize: "20px", color: "#ffeb3b" }}>
+                {saveTitle4}
+              </h1>
+              <p>{saveText4}</p></>)} 
               <div>
                 <IconButton
                   aria-label="add to favorites"
@@ -438,28 +498,35 @@ export default function RowAndColumnSpacing() {
             />
 
             <Item>
+               {isAdmin === true ? (
+                 <>
               <TextField className="text-white"
                 id="title"
                 label="Title"
                 placeholder="title"
                 variant="outlined"
                 fullWidth
-                value={saveJoke5}
-                onChange={(e) => setSaveJoke5(e.target.value)}
+                value={saveTitle5}
+                onChange={(e) => setSaveTitle5(e.target.value)}
               />
-              <h1 style={{ fontSize: "20px", color: "#3f51b5" }}>
-                {saveJoke5}
-              </h1>
-               <TextField className="text-white"
+              <TextField className="text-white"
                 id="text"
                 label="Text"
                 placeholder="text"
                 variant="outlined"
                 fullWidth
                 value={saveText5}
-                onChange={(e) => setSaveText5(e.target.value)}
-              />
-              <p>{saveText5}</p>
+                    onChange={(e) => setSaveText5(e.target.value)}
+                    placeholder="MultiLine with rows: 4 and rowsMax: 6"
+                    multiline
+                    rows={4}
+                    maxRows={6}
+                  />
+                   </>
+                  ):( <><h1 style={{ fontSize: "20px", color: "#ffeb3b" }}>
+                {saveTitle5}
+              </h1>
+              <p>{saveText5}</p></>)} 
               <div>
                 <IconButton
                   aria-label="add to favorites"
@@ -502,31 +569,35 @@ export default function RowAndColumnSpacing() {
             />
 
             <Item>
+              {isAdmin === true ? (
+                 <>
               <TextField className="text-white"
                 id="title"
                 label="Title"
                 placeholder="title"
                 variant="outlined"
                 fullWidth
-                value={saveJoke0}
-                onChange={(e) => setSaveJoke0(e.target.value)}
+                value={saveTitle0}
+                onChange={(e) => setSaveTitle0(e.target.value)}
               />
-              
-              <h1 style={{ fontSize: "20px", color: "#ff9800" }}>
-                {saveJoke0}
-              </h1>
-             
-               <TextField className="text-white"
+              <TextField className="text-white"
                 id="text"
                 label="Text"
                 placeholder="text"
                 variant="outlined"
                 fullWidth
-                value={saveText0}
+                value={saveText2}
                 onChange={(e) => setSaveText0(e.target.value)}
-              />
-              <p>{saveText0}</p>
-             
+                placeholder="MultiLine with rows: 4 and rowsMax: 6"
+                multiline
+                rows={4}
+                maxRows={6}
+                  />
+                   </>
+                  ):( <><h1 style={{ fontSize: "20px", color: "#ffeb3b" }}>
+                {saveTitle0}
+              </h1>
+              <p>{saveText0}</p></>)} 
               <div>
                 <IconButton
                   aria-label="add to favorites"
@@ -548,3 +619,4 @@ export default function RowAndColumnSpacing() {
     </Box>
   );
 }
+

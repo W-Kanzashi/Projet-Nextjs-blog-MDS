@@ -1,4 +1,4 @@
-// import * as React from "react"; 
+//imports
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
@@ -19,16 +19,12 @@ import { indigo } from "@mui/material/colors";
 import { teal } from "@mui/material/colors";
 
 
-//API FETCH
+//hooks
 import { useState, useEffect } from "react";
-// import { decode } from "punycode";
 import TextField from "@mui/material/TextField";
 import { useRouter } from 'next/router';
 
-
-//*!end update form const*/
-//Styled components are a good choice for building a UI library since everything
-// can be in one file and easily be exported and reused
+//Styled components UI library 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "light" ? "#000" : "#ccc",
   ...theme.typography.body2,
@@ -37,42 +33,39 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-//export default is used to export a single class, function or primitive from a script file.
-//export le componenet 
+//Main function
 export default function RowAndColumnSpacing() {
-  
-  //*!form to update the work history*/
-  //useState est un Hook qui permet d’ajouter l’état local React à des fonctions composants
-  //setFormValues nous permetre de modifier la valeur du variable
-  //useState c'est pour sauvgardé l'état d'un component
-  //formValue retourn l'état  
+ 
+
+  //UseState hook  
   const [formValue, setFormValue] = useState(() => {
     return {
       title: "",
       text: "",
     };
   });
-  //permet de mettre à jour formValue
+
+  //permettre de mettre à jour  le formValue
   const handleUserInfo = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     setFormValue({ ...formValue, [event.target.id]: event.target.value });
   };
 
-  //fonction s'excution when I click on the validate button
+  //fonction qui se déclenche quand je clique sur le bouton
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(formValue);
 
-//creé un objet formdata qui contiendra un tableau
+//Objet formdata(tableau) 
     const formData = new FormData();
-//loop in formvalue
-    //key title,key text, value what is going to display
+
+
     Object.entries(formValue).forEach(([key, value]) => {
-      //La méthode append() de l'interface FormData ajoute une nouvelle valeur à une clé existante dans un
-      // objet FormData, ou rajoute cette clé et cette valeur quand elle n'existe pas.
+      //Ajoute clé ou clé et valeur
       formData.append(key, value);
     });
-//
+
+//conversion format Json
     const response = await fetch("/api/workData", {
       method: "UPDATE",
       body: formData,
@@ -80,14 +73,10 @@ export default function RowAndColumnSpacing() {
 
     console.log(await response.json());
   };
-  //*!end/
+ 
+  //SaveTitlepour sauvagarder tous les fonctions */
 
-  //*!select the data/
-  //**pour sauvagarder tous les titres et les textes */
-  //*map as an alternative*/
-  //*getter est pour récupérer 
-
-
+  //title
   const [saveTitle0, setSaveTitle0] = useState("");
   const [saveTitle1, setSaveTitle1] = useState("");
   const [saveTitle2, setSaveTitle2] = useState("");
@@ -102,7 +91,7 @@ export default function RowAndColumnSpacing() {
   const [saveText4, setSaveText4] = useState("");
   const [saveText5, setSaveText5] = useState("");
 
-  // la méthode qui fait le get
+
   //await -> asyncranous function
   const handleUser = async () => {
     
@@ -111,20 +100,18 @@ export default function RowAndColumnSpacing() {
       method: "GET",
     });
 
-    // Convert the string into json format
+// Converstion
     const decoded = await data.json();
     console.log(decoded); // ce que je récupére
 
-    // title Save the data in a useState function
-    // useState
-  //*!select the data/
+//sélection des data
     setSaveTitle0(decoded[0].title);
     setSaveTitle1(decoded[1].title);
     setSaveTitle2(decoded[2].title);
     setSaveTitle3(decoded[3].title);
     setSaveTitle4(decoded[4].title);
     setSaveTitle5(decoded[5].title);
-    // title Save the data a useState function
+
     setSaveText0(decoded[0].text);
     setSaveText1(decoded[1].text);
     setSaveText2(decoded[2].text);
@@ -133,42 +120,32 @@ export default function RowAndColumnSpacing() {
     setSaveText5(decoded[5].text);
 
   };
-  //Le hook useEffect est un hook qui va permettre de déclencher une fonction
-  // de manière asynchrone lorsque l'état du composant change
-  //lancer la fonctionn handeluser le moment ou je charge la page
-//appel à notre API se fait au niveau du hook useEffect
+  
+  //useEffect hook
   useEffect(() => {
     handleUser();
   }, []);
-//verify if the user is an admin
-//useState is a React Hook that lets you add a state variable to your component.
-//the user is not an admin in the first place 
-//verify if he is admin , if it is true, then set isAdmin to true
+
+//verifier si l'utilisateur est un admin
    const router = useRouter()
    const [isAdmin, setIsAdmin] = useState(() => {
      return false;
    });
-// condition
+
   
-  const userId = "639dd629ca2b121f57c65960"; // got it from the database, table user
-  // if the id user in the url corresponds to the user id , then then the user is an admin
-  // split is a method used to split the url or routerpathname
+  const userId = "639dd629ca2b121f57c65960"; 
   const token = router.asPath.split("/")[2];
    console.log("token : " + token);
   useEffect(() => {
-     if (router.query.id === userId) { //if the id of the user corresponds to the id in the url , then the user is an admin
+     if (router.query.id === userId) {  
      setIsAdmin(true);
            
     }
     console.log(router.query);
-    // query.id will send an object which contains the path of my file(dossier pages)
-    //it's an object returned by next, excuted before displaying my page
+   
     
   });
-  // const postId = "63947260c7f11bfea52b7d89";
-  // const data = await fetch("/api/workData", {
-  //     method: "DELETE",
-  //   });
+ 
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -223,12 +200,11 @@ export default function RowAndColumnSpacing() {
                 />
               
                 <TextField className="text-white"
-                id="text"
-                label="Text"
-                placeholder="text"
-                variant="outlined"
-                fullWidth
-                value={saveText1}
+                    id="text"
+                    label="Text"
+                    variant="outlined"
+                    fullWidth
+                    value={saveText1}
                     onChange={(e) => setSaveText1(e.target.value)}
                     placeholder="MultiLine with rows: 4 and rowsMax: 6"
                     multiline
@@ -296,12 +272,11 @@ export default function RowAndColumnSpacing() {
                 onChange={(e) => setSaveTitle2(e.target.value)}
               />
               <TextField className="text-white"
-                id="text"
-                label="Text"
-                placeholder="text"
-                variant="outlined"
-                fullWidth
-                value={saveText2}
+                    id="text"
+                    label="Text"
+                    variant="outlined"
+                    fullWidth
+                    value={saveText2}
                     onChange={(e) => setSaveText2(e.target.value)}
                     placeholder="MultiLine with rows: 4 and rowsMax: 6"
                     multiline
@@ -368,12 +343,11 @@ export default function RowAndColumnSpacing() {
                 onChange={(e) => setSaveTitle2(e.target.value)}
               />
               <TextField className="text-white"
-                id="text"
-                label="Text"
-                placeholder="text"
-                variant="outlined"
-                fullWidth
-                value={saveText3}
+                    id="text"
+                    label="Text"
+                    variant="outlined"
+                    fullWidth
+                    value={saveText3}
                     onChange={(e) => setSaveText3(e.target.value)}
                     placeholder="MultiLine with rows: 4 and rowsMax: 6"
                     multiline
@@ -439,12 +413,11 @@ export default function RowAndColumnSpacing() {
                 onChange={(e) => setSaveTitle4(e.target.value)}
               />
               <TextField className="text-white"
-                id="text"
-                label="Text"
-                placeholder="text"
-                variant="outlined"
-                fullWidth
-                value={saveText4}
+                    id="text"
+                    label="Text"
+                    variant="outlined"
+                    fullWidth
+                    value={saveText4}
                     onChange={(e) => setSaveText4(e.target.value)}
                     placeholder="MultiLine with rows: 4 and rowsMax: 6"
                     multiline
@@ -510,12 +483,11 @@ export default function RowAndColumnSpacing() {
                 onChange={(e) => setSaveTitle5(e.target.value)}
               />
               <TextField className="text-white"
-                id="text"
-                label="Text"
-                placeholder="text"
-                variant="outlined"
-                fullWidth
-                value={saveText5}
+                    id="text"
+                    label="Text"
+                    variant="outlined"
+                    fullWidth
+                    value={saveText5}
                     onChange={(e) => setSaveText5(e.target.value)}
                     placeholder="MultiLine with rows: 4 and rowsMax: 6"
                     multiline
@@ -583,7 +555,6 @@ export default function RowAndColumnSpacing() {
               <TextField className="text-white"
                 id="text"
                 label="Text"
-                placeholder="text"
                 variant="outlined"
                 fullWidth
                 value={saveText2}

@@ -2,41 +2,41 @@ import { NextApiRequest, NextApiResponse } from "next"; // typescript
 
 import connectDB from "@/lib/database";
 
-import { ObjectId } from "mongodb"; //mechanisme de gestion // like id in sql
+import { ObjectId } from "mongodb"; // id in sql
 
 export default async function getHomeData(
-  req: NextApiRequest, //what we receive
-  res: NextApiResponse //what we send
+  req: NextApiRequest, 
+  res: NextApiResponse 
 ) {
  
-  const conn = connectDB(); // Retreive the inforamtion to be able to connect to the database
+  const conn = connectDB(); 
  
   try {
-    await conn.connect(); // Connect to the database
+    await conn.connect(); 
 
-    const database = conn.db("projet-blog"); // Select the database to use
-    const sections = database.collection("work"); // Select the collection (table)
-    const result = await sections.find({}).toArray(); // Find all documents in the collection
-    console.log(result); // the content of the database
-    res.status(200).json(result); // Send the result to the client / 200 OK
+    const database = conn.db("projet-blog"); 
+    const sections = database.collection("work"); 
+    const result = await sections.find({}).toArray(); 
+    console.log(result); 
+    res.status(200).json(result); 
   } catch (error) {
-    conn.close(); // Close the connection to the database
-    console.log(error); // Log the error in the terminal 
-    res.status(400).json(error); // Send the error to the client not found// library better
+    conn.close(); 
+    console.log(error); 
+    res.status(400).json(error); 
   } finally {
     conn.close(); //excuted all the time /close the connection 
   }
 }
 // it doesn't count for images 
 async function updateWorkData(req: NextApiRequest, res: NextApiResponse) {
-  const conn = connectDB(); // Retreive the inforamtion to be able to connect to the database
+  const conn = connectDB(); 
   
   try {
-    await conn.connect(); // Connect to the database
+    await conn.connect(); 
     const userId = new ObjectId(req.body._id); // Create a new ObjectId from the id passed in the query string (req.query.id
 
-    const database = conn.db("projet-blog"); // Select the database to use
-    const sections = database.collection("work"); // Select the collection (table)
+    const database = conn.db("projet-blog"); 
+    const sections = database.collection("work"); 
    const result = await sections.findOneAndUpdate(
       {
         _id: userId,
@@ -47,7 +47,7 @@ async function updateWorkData(req: NextApiRequest, res: NextApiResponse) {
           text: req.body.text,
         },
       }
-    ); // Find user by userId in the collection profile
+    ); 
     console.log(result);
     return { success: true, content: result };
   } catch (error) {
@@ -58,20 +58,20 @@ async function updateWorkData(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 async function DeleteWorkData(req: NextApiRequest, res: NextApiResponse) {
-  const conn = connectDB(); // Retreive the inforamtion to be able to connect to the database
+  const conn = connectDB();
   
 
    try {
-    await conn.connect(); // Connect to the database
-    const userId = new ObjectId(req.body._id); // Create a new ObjectId from the id passed in the query string (req.query.id
+    await conn.connect(); 
+    const userId = new ObjectId(req.body._id); 
 
-    const database = conn.db("projet-blog"); // Select the database to use
-    const sections = database.collection("work"); // Select the collection (table)
+    const database = conn.db("projet-blog"); 
+    const sections = database.collection("work"); 
    const result = await sections.deleteOne(
       {
         _id: userId,
       },
-    ); // Find user by userId in the collection profile
+    ); 
     console.log(result);
     return { success: true, content: result };
   } catch (error) {
