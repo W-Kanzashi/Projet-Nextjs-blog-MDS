@@ -86,6 +86,8 @@ export default function RowAndColumnSpacing() {
   //**pour sauvagarder tous les titres et les textes */
   //*map as an alternative*/
   //*getter est pour récupérer 
+
+
   const [saveTitle0, setSaveTitle0] = useState("");
   const [saveTitle1, setSaveTitle1] = useState("");
   const [saveTitle2, setSaveTitle2] = useState("");

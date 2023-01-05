@@ -22,7 +22,7 @@ export default async function getHomeData(
   } catch (error) {
     conn.close(); // Close the connection to the database
     console.log(error); // Log the error in the terminal 
-    res.status(400).json(error); // Send the error to the client not found
+    res.status(400).json(error); // Send the error to the client not found// library better
   } finally {
     conn.close(); //excuted all the time /close the connection 
   }
