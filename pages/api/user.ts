@@ -2,28 +2,69 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import connectDB from "@/lib/database";
 
-import Sections from "@/interfaces/UserProfile";
+import UserData from "@/interfaces/userModel";
 
-export default async function getHomeData(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  type SectionInfo = Pick<Sections, "title">; // Pick the title property from the Sections interface
-  const conn = connectDB(); // Retreive the inforamtion to be able to connect to the database
+const bcrypt = require("bcrypt");
+
+export default async function apiHandler(req: NextApiRequest, res: NextApiResponse) {
+  let result: any;
+  switch (req.method) {
+    case "POST":
+      result = await createUser(req, res);
+      res.json(result); // Send the error to the client
+      break;
+    case "GET":
+      result = await getUsers(req, res);
+      res.json(result);
+      break;
+  }
+};
+
+async function createUser(req: NextApiRequest, res: NextApiResponse) {
+  const conn = connectDB(); // Retrieve the information to be able to connect to the database
+  let newUser: any;
+  let password = await bcrypt.hash(req.body.password, 10);
+
+  try {
+    await conn.connect(); // Connect to the database
+
+    const database = conn.db("projet-blog"); // Select the database to use
+    const sections = database.collection<UserData>("users"); // Select the collection (table)
+    newUser = await sections.insertOne(
+      {
+        name: req.body.lastName,
+        surname: req.body.firstName,
+        email: req.body.email,
+        password: password
+      }
+    )
+    return { success: true, content: newUser };
+  } catch (error) {
+    conn.close(); // Close the connection to the database
+    console.log(error); // Log the error
+    return { success: false, error: error };
+  } finally {
+    conn.close();
+  }
+}
+
+async function getUsers(req: NextApiRequest, res: NextApiResponse) {
+  const conn = connectDB(); // Retrieve the information to be able to connect to the database
   let result: any;
 
   try {
     await conn.connect(); // Connect to the database
 
-    const database = conn.db("portfolio"); // Select the database to use
-    const sections = database.collection<SectionInfo>("sections"); // Select the collection (table)
-    result = await sections.find<SectionInfo>({}).toArray(); // Find all documents in the collection
+    const database = conn.db("projet-blog"); // Select the database to use
+    const userList = database.collection<UserData>("users"); // Select the collection (table)
+    result = await userList.find({}, {projection: {name: 1, surname: 1, _id: 0}}).toArray(); // get all users names and surname
+    //console.log(result);
+    return { success: true, content: result };
+
   } catch (error) {
-    conn.close(); // Close the connection to the database
     console.log(error); // Log the error
-    res.json({ message: "201", success: false, error: error }); // Send the error to the client
+    return { success: false, error: error };
   } finally {
     conn.close();
-    res.json({ message: "201", success: true, content: result }); // Send the result to the client
   }
 }

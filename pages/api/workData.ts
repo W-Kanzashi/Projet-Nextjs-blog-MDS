@@ -1,31 +1,84 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next"; // typescript
 
 import connectDB from "@/lib/database";
 
-import Sections from "@/interfaces/UserProfile";
+import { ObjectId } from "mongodb"; // id in sql
 
 export default async function getHomeData(
-  req: NextApiRequest,
-  res: NextApiResponse
+  req: NextApiRequest, 
+  res: NextApiResponse 
 ) {
-  type SectionInfo = Pick<Sections, "title">; // Pick the title property from the Sections interface
-  // type SectionInfo1 = Pick<Sections, "text">;
-  const conn = connectDB(); // Retreive the inforamtion to be able to connect to the database
-  let result: any;
-
+ 
+  const conn = connectDB(); 
+ 
   try {
-    await conn.connect(); // Connect to the database
+    await conn.connect(); 
 
-    const database = conn.db("projet-blog"); // Select the database to use
-    const sections = database.collection("work"); // Select the collection (table)
-    result = await sections.find({}).toArray(); // Find all documents in the collection
-    console.log(result);
+    const database = conn.db("projet-blog"); 
+    const sections = database.collection("work"); 
+    const result = await sections.find({}).toArray(); 
+    console.log(result); 
+    res.status(200).json(result); 
   } catch (error) {
-    conn.close(); // Close the connection to the database
-    console.log(error); // Log the error
-    res.json({ message: "201", success: false, error: error }); // Send the error to the client
+    conn.close(); 
+    console.log(error); 
+    res.status(400).json(error); 
   } finally {
-    conn.close();
-    res.json({ message: "201", success: true, content: result }); // Send the result to the client
+    conn.close(); //excuted all the time /close the connection 
   }
+}
+// it doesn't count for images 
+async function updateWorkData(req: NextApiRequest, res: NextApiResponse) {
+  const conn = connectDB(); 
+  
+  try {
+    await conn.connect(); 
+    const userId = new ObjectId(req.body._id); // Create a new ObjectId from the id passed in the query string (req.query.id
+
+    const database = conn.db("projet-blog"); 
+    const sections = database.collection("work"); 
+   const result = await sections.findOneAndUpdate(
+      {
+        _id: userId,
+      },
+      {
+        $set: {   //pour mettre à jour title et text
+          title: req.body.title,
+          text: req.body.text,
+        },
+      }
+    ); 
+    console.log(result);
+    return { success: true, content: result };
+  } catch (error) {
+    console.log(error); // Log the error
+    return { success: false, error: error };
+  } finally {
+    await conn.close();
+  }
+}
+async function DeleteWorkData(req: NextApiRequest, res: NextApiResponse) {
+  const conn = connectDB();
+  
+
+   try {
+    await conn.connect(); 
+    const userId = new ObjectId(req.body._id); 
+
+    const database = conn.db("projet-blog"); 
+    const sections = database.collection("work"); 
+   const result = await sections.deleteOne(
+      {
+        _id: userId,
+      },
+    ); 
+    console.log(result);
+    return { success: true, content: result };
+  } catch (error) {
+    console.log(error); // Log the error
+    return { success: false, error: error };
+  } finally {
+    await conn.close();
+  }
+
 }

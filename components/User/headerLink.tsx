@@ -2,6 +2,8 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import useSWR from "swr";
 
+import HeaderNavLoading from "@/components/Loading/header-nav-loading";
+
 const fetcher = async (url: string): Promise<any> => {
   const user = document.cookie;
   const token = user.split("=")[1];
@@ -30,7 +32,7 @@ export default function HeaderLink(): JSX.Element {
   const { data, error } = useSWR("/api/jwt", fetcher);
 
   if (error) return <div>failed to load</div>;
-  if (!data) return <div>loading...</div>;
+  if (!data) return <HeaderNavLoading />;
 
   return (
     <>

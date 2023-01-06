@@ -1,5 +1,4 @@
-import { useContext, Suspense } from "react";
-import dynamic from "next/dynamic";
+import { useContext } from "react";
 import Image from "next/image";
 
 import profilePick from "/public/aerial-shot-beautiful-tree-forest-covered-with-fog-bled-slovenia.jpg";
@@ -9,18 +8,13 @@ import Button from "@mui/material/Button";
 
 import { EditMode } from "@/lib/EditContext";
 
-// import HeaderLink from "./headerLink";
-const HeaderLink = dynamic(() => import("./headerLink"), {
-  suspense: true,
-});
-
+import HeaderLink from "./headerLink";
 import DialogEdit from "./dialogEdit";
 
 export default function WorkHeader(): JSX.Element {
   const { editMode, setEditMode, openDialog, setOpenDialog } =
     useContext(EditMode);
 
-  const pathId = "637e661c816431f4278be3e4";
   const handleEditMode = () => {
     if (editMode === true) {
       setOpenDialog(true);
@@ -28,10 +22,6 @@ export default function WorkHeader(): JSX.Element {
       setEditMode(true);
     }
   };
-
-  // userId : 637e661c816431f4278be3e4
-  const user =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiX2lkIjoiMjYzODcxMjYzODcxMjYzODcxMjY4MzEiLCJpYXQiOjE1MTYyMzkwMjJ9.o8ZMZHZnKe87MiQlZsMwGgVlv6Nfvm4FEDUPIkaf41Y";
 
   return (
     <>
@@ -59,9 +49,7 @@ export default function WorkHeader(): JSX.Element {
           </div>
         </div>
         <div className="mb-10">
-          <Suspense fallback={<div>Loading...</div>}>
-            <HeaderLink />
-          </Suspense>
+          <HeaderLink />
         </div>
       </header>
       <DialogEdit open={openDialog} />
